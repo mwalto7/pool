@@ -56,6 +56,13 @@ func registerHashFunc(h crypto.Hash) {
 	registeredHashFuncs[h] = p
 }
 
+// HashCloser represents a pooled hash.Hash.
+type HashCloser interface {
+	hash.Hash
+	// Close resets the hash to its initial state and puts it back into the pool.
+	Close() error
+}
+
 // GetHash returns a pooled hash function.
 func GetHash(h crypto.Hash) HashCloser {
 	return registeredHashFuncs[h].getHash()
@@ -67,13 +74,6 @@ type hashPool struct {
 
 func (p *hashPool) getHash() HashCloser {
 	return p.hashFuncs.Get().(*hashFunc)
-}
-
-// HashCloser represents a pooled hash.Hash.
-type HashCloser interface {
-	hash.Hash
-	// Close resets the hash to its initial state and puts it back into the pool.
-	Close() error
 }
 
 type hashFunc struct {
