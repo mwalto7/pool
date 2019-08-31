@@ -7,7 +7,7 @@ import (
 	"io"
 	"strings"
 
-	"github.com/mwalto7/pool/pool"
+	"github.com/mwalto7/pool"
 )
 
 func ExampleGetHash_sha256() {
